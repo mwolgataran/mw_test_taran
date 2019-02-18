@@ -6,7 +6,7 @@ class CorezoidRequest {
     }
 
     async getScheme(obj_id, obj_type){
-        return axios.post(this.url,{"ops":[{"type":"get", "obj":"scheme", obj_id, obj_type}]});
+        return axios.post(this.url,{"ops":[{"type":"get", "obj":"obj_scheme", obj_id, obj_type}]});
     }
 
     calcArea() {
