@@ -9,8 +9,8 @@ class CorezoidRequest {
         return axios.post(this.url,{"ops":[{"type":"get", "obj":"obj_scheme", obj_id, obj_type}]});
     }
 
-    calcArea() {
-        return this.height * this.width;
+    async addTask(conv_id, ref, task_data) {
+        return axios.post(this.url,{"ops":[{"type":"create", "obj":"task", "conv_id":conv_id, "ref":ref, "data": task_data}]});
     }
 }
 
