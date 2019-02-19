@@ -7,6 +7,7 @@ class Config {
         this.api_login = api_login;
         this.secret_key = secret_key;
         this.unix = moment().unix();
+        this.url = "https://api.corezoid.com/api/2/json/";
     }
 
     getSign(body) {
@@ -17,6 +18,13 @@ class Config {
         let sign = sha1Hex(string);
 
         return sign;
+    }
+
+    getUrl(sign) {
+
+        const api_url = "https://api.corezoid.com/api/2/json/" + this.api_login + "/" + this.unix + "/" + sign;
+
+        return api_url;
     }
 }
 
@@ -36,9 +44,8 @@ class CorezoidRequest {
 
         const config = new Config(api_login,secret_key);
         const sign = config.getSign(body);
-
-        let api_url = "https://api.corezoid.com/api/2/json/" + api_login + "/" + config.unix + "/" + sign;
-
+        const api_url = config.getUrl(sign);
+        
         let response = await axios.post(api_url, body).then(res => res.data);
 
         return response;
