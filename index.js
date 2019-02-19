@@ -13,7 +13,7 @@ class CorezoidRequest {
 
     async addTask(conv_id, ref, task_data, api_login, secret_key) {
 
-        const body = {
+        let body = {
             "ops": [{
                 "type": "create",
                 "obj": "task",
@@ -23,17 +23,16 @@ class CorezoidRequest {
             }]
         };
 
-        const unix = moment().unix();
+        let unix = moment().unix();
 
         let json_string = JSON.stringify(body);
+        let string = unix + secret_key + json_string + secret_key;
 
-        const string = unix + secret_key + json_string + secret_key;
+        let sign = sha1Hex(string);
 
-        const sign = sha1Hex(string);
+        let api_url = "https://api.corezoid.com/api/2/json/" + api_login + "/" + unix + "/" + sign;
 
-        const api_url = "https://api.corezoid.com/api/2/json/" + api_login + "/" + unix + "/" + sign;
-
-        const response = await axios.post(api_url, body).then(res => res.data);
+        let response = await axios.post(api_url, body).then(res => res.data);
 
         return response;
     }
