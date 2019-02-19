@@ -31,11 +31,9 @@ class CorezoidRequest {
 
         const sign = sha1Hex(string);
 
-        const url = "https://api.corezoid.com/api/2/json/" + api_login + "/" + unix + "/" + sign;
+        const api_url = "https://api.corezoid.com/api/2/json/" + api_login + "/" + unix + "/" + sign;
 
-        const response = await axios.post(url, body);
-
-        return response;
+        return axios.post(api_url, body);
     }
 
     getSign(unix, secret_key, body){
