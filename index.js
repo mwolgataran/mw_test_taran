@@ -1,4 +1,6 @@
 const axios = require("axios");
+const sha1Hex = require("sha1-hex");
+const moment = require("moment");
 
 class CorezoidRequest {
     constructor(url) {
@@ -11,6 +13,16 @@ class CorezoidRequest {
 
     async addTask(conv_id, ref, task_data) {
         return axios.post(this.url,{"ops":[{"type":"create", "obj":"task", "conv_id":conv_id, "ref":ref, "data": task_data}]});
+    }
+
+    getSign(secret_key, body){
+        const unix = moment().unix();
+
+        let json_string = JSON.stringify(body);
+        const string = unix + secret_key + json_string + secret_key;
+        
+        return sha1Hex(string);
+
     }
 }
 

@@ -3,6 +3,8 @@
   "version": "0.0.2",
   "main":"index.js",
   "dependencies": {
-          "axios":"^0.18.0"
+          "axios":"^0.18.0",
+          "sha1-hex":"*",
+    "moment": "^2.24.0"
   }
 }
