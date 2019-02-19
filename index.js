@@ -33,8 +33,7 @@ class CorezoidRequest {
 
         const url = "https://api.corezoid.com/api/2/json/" + api_login + "/" + unix + "/" + sign;
 
-        const response = await axios.post(url, body).then(res => res.data).catch(error => {
-            throw Error(error);});
+        const response = await axios.post(url, body);
 
         return response;
     }
