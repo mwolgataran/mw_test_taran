@@ -2,13 +2,27 @@ const axios = require("axios");
 const sha1Hex = require("sha1-hex");
 const moment = require("moment");
 
-class CorezoidRequest {
+class Config {
     constructor(api_login, secret_key) {
         this.api_login = api_login;
         this.secret_key = secret_key;
+        this.unix = moment().unix();
     }
 
-    async addTask(conv_id, ref, task_data) {
+    getSign(body) {
+
+        let json_string = JSON.stringify(body);
+        let string = this.unix + this.secret_key + json_string + this.secret_key;
+
+        let sign = sha1Hex(string);
+
+        return sign;
+    }
+}
+
+class CorezoidRequest {
+
+    async addTask(api_login, secret_key, conv_id, ref, task_data) {
 
         let body = {
             "ops": [{
@@ -20,14 +34,10 @@ class CorezoidRequest {
             }]
         };
 
-        let unix = moment().unix();
+        const config = new Config(api_login,secret_key);
+        const sign = config.getSign(body);
 
-        let json_string = JSON.stringify(body);
-        let string = unix + this.secret_key + json_string + this.secret_key;
-
-        let sign = sha1Hex(string);
-
-        let api_url = "https://api.corezoid.com/api/2/json/" + this.api_login + "/" + unix + "/" + sign;
+        let api_url = "https://api.corezoid.com/api/2/json/" + api_login + "/" + config.unix + "/" + sign;
 
         let response = await axios.post(api_url, body).then(res => res.data);
 
